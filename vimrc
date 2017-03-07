@@ -53,13 +53,16 @@
 			let g:ycm_complete_in_comments=1
 			let g:ycm_collect_identifiers_from_comments_and_strings = 0
 			"開始補全的字符數"
-			let g:ycm_min_num_of_chars_for_completion=2
+			let g:ycm_min_num_of_chars_for_completion=1
 			"補全後自動關機預覽窗口"
 			let g:ycm_autoclose_preview_window_after_completion=1
 			" 禁止緩存匹配項,每次都重新生成匹配項"
 			let g:ycm_cache_omnifunc=0
 			"字符串中也開啟補全"
 			let g:ycm_complete_in_strings = 1
+            let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
+            let g:ycm_use_ultisnips_completer = 1 " Default 1, just ensure
+
 			"離開插入模式後自動關閉預覽窗口"
 			autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 			"回車即選中當前項"
@@ -86,6 +89,7 @@
 		""" }}}
 	""" }}}
 
+	Plugin 'tweekmonster/django-plus.vim'
 
 	""" Nerdtree - A tree explorer plugin for navigating the filesystem {{{
 	 "使用
@@ -551,6 +555,31 @@ set showcmd
 set so=7    
 "set cursorline              " 突出顯示當前行
 
-
 " 按F5運行python"
 map <F5> :Autopep8<CR> :w<CR> :call RunPython()<CR>
+
+"Vim 与系统共享剪贴板
+vnoremap y "+y"
+
+
+function FindDjangoSettings2()
+    if strlen($VIRTUAL_ENV) && has('python3')
+        let django_check = system("pip freeze | grep -q Django")
+        if v:shell_error
+            echom 'django not installed.'
+        else
+            echom 'django is installed.'
+            let output  = system("find $VIRTUAL_ENV -wholename '*/lib/*' -or -wholename '*/install/' -or -name 'settings.py' | tr '\n' ' '")
+            let outarray= split(output, '[\/]\+')
+            let module  = outarray[-2] . '.' . 'settings'
+            let syspath = system("python -c 'import sys; print(sys.path)' | tr '\n' ' ' ")
+            " let curpath = '/' . join(outarray[:-2], '/')
+            execute 'py3 import sys, os'
+            " execute 'py3 sys.path.append("' . curpath . '")'
+            " execute 'py3 sys.path.append("' . syspath . '")'
+            execute 'py3 sys.path = ' . syspath
+            execute 'py3 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "' . module . '")'
+        endif
+    endif
+endfunction
+:call FindDjangoSettings2()
