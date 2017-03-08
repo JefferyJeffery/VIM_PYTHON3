@@ -1,0 +1,159 @@
+"==========================================  
+"General  
+"==========================================  
+" history存儲長度。  
+set history=1000    
+
+"檢測文件類型  
+filetype on  
+
+" 針對不同的文件類型採用不同的縮進格式    
+filetype indent on                 
+
+" 允許插件    
+filetype plugin on  
+
+" 啟動自動補全  
+filetype plugin indent on  
+
+" syntax highlighting
+syntax on                                  
+
+"兼容vi模式。去掉討厭的有關vi一致性模式，避免以前版本的一些bug和侷限  
+set nocompatible        
+set autoread          " 文件修改之後自動載入。  
+set shortmess=atI       " 啟動的時候不顯示那個援助索馬里兒童的提示  
+
+" 取消備份。  
+"urn backup off, since most stuff is in SVN, git et.c anyway...  
+set nobackup  
+set nowb  
+set noswapfile   
+
+"==========================================  
+"clipboard  
+"==========================================  
+" Copy data between different instances of vim
+" https://evertpot.com/osx-tmux-vim-copy-paste-clipboard/
+set clipboard=unnamed
+
+"貼時保持格式  
+set paste  
+"- 則點擊光標不會換,用於複製 
+
+"==========================================  
+" mouse  
+"==========================================  
+set mouse=a
+
+set selection=exclusive    
+set selectmode=mouse,key  
+
+"==========================================  
+" Indent multiple lines with tab
+"========================================== 
+" In Normal mode , Indent multiple lines with tab
+nmap <tab> V>
+nmap <s-tab> V<
+vmap <tab> >gv
+vmap <s-tab> <gv
+
+"==========================================  
+" No annoying sound on errors    
+"========================================== 
+" 去掉輸入錯誤的提示聲音  
+set noerrorbells  
+set novisualbell  
+set t_vb=  
+set tm=500    
+
+set background=dark                         " we're using a dark bg
+"==========================================  
+" highlighting 
+"========================================== 
+""" Force behavior and filetypes, and by extension highlighting {{{
+    augroup FileTypeRules
+        autocmd!
+        autocmd BufNewFile,BufRead *.md set ft=markdown tw=79
+        autocmd BufNewFile,BufRead *.tex set ft=tex tw=79
+        autocmd BufNewFile,BufRead *.txt set ft=sh tw=79
+    augroup END
+""" }}}
+
+""" 256 colors for maximum jellybeans bling. See commit log for info {{{
+    if (&term =~ "xterm") || (&term =~ "screen")
+        set t_Co=256
+    endif
+""" }}}
+
+""" Custom highlighting, where NONE uses terminal background {{{
+    function! CustomHighlighting()
+        highlight Normal ctermbg=NONE
+        highlight NonText ctermbg=NONE
+        highlight LineNr ctermbg=NONE
+        highlight SignColumn ctermbg=NONE
+        highlight SignColumn guibg=#151515
+        highlight CursorLine ctermbg=235
+    endfunction
+
+    call CustomHighlighting()
+""" }}}
+
+"==========================================  
+" show and format  
+"==========================================  
+"顯示行號：  
+set number  
+set nowrap                    " 取消換行。  
+"為方便複製，用<F6>開啟/關閉行號顯示:  
+nnoremap <F6> :set nonumber!<CR>:set foldcolumn=0<CR>  
+
+"括號配對情況  
+set showmatch  
+" How many tenths of a second to blink when matching brackets  
+set mat=2  
+
+"設置文內智能搜索提示  
+" 高亮search命中的文本。  
+set hlsearch            
+" 搜索時忽略大小寫  
+set ignorecase  
+" 隨著鍵入即時搜索  
+set incsearch  
+" 有一個或以上大寫字母時仍大小寫敏感  
+set smartcase  
+
+" 代碼摺疊  
+set foldenable  
+" 摺疊方法  
+" manual    手工摺疊  
+" indent    使用縮進表示摺疊  
+" expr      使用表達式定義摺疊  
+" syntax    使用語法定義摺疊  
+" diff      對沒有更改的文本進行摺疊  
+" marker    使用標記進行摺疊, 默認標記是 {{{ 和 }}}  
+set foldmethod=syntax  
+" 在左側顯示摺疊的層次  
+"set foldcolumn=4  
+
+set tabstop=4                " 設置Tab鍵的寬度        [等同的空格個數]  
+set shiftwidth=4  
+set expandtab                " 將Tab自動轉化成空格    [需要輸入真正的Tab鍵時，使用 Ctrl+V + Tab]  
+" 按退格鍵時可以一次刪掉 4 個空格  
+set softtabstop=4  
+set backspace=2
+
+set ai "Auto indent  
+set si "Smart indent  
+
+"==========================================  
+" status  
+"==========================================  
+"顯示當前的行號列號：  
+set ruler  
+"在狀態欄顯示正在輸入的命令  
+set showcmd  
+
+" Set 7 lines to the cursor - when moving vertically using j/k 上下滾動,始終在中間  
+set so=7    
+"set cursorline              " 突出顯示當前行
