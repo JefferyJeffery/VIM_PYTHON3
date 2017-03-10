@@ -4,18 +4,6 @@
 " history存儲長度。  
 set history=1000    
 
-"檢測文件類型  
-filetype on  
-
-" 針對不同的文件類型採用不同的縮進格式    
-filetype indent on                 
-
-" 允許插件    
-filetype plugin on  
-
-" 啟動自動補全  
-filetype plugin indent on  
-
 " syntax highlighting
 syntax on                                  
 
@@ -106,7 +94,19 @@ set background=dark                         " we're using a dark bg
 set number  
 set nowrap                    " 取消換行。  
 "為方便複製，用<F6>開啟/關閉行號顯示:  
-nnoremap <F6> :set nonumber!<CR>:set foldcolumn=0<CR>  
+" nnoremap <F6> :set nonumber!<CR>:set foldcolumn=0<CR>  
+
+"檢測文件類型  
+filetype on  
+
+" 針對不同的文件類型採用不同的縮進格式    
+filetype indent on                 
+
+" 允許插件    
+filetype plugin on  
+
+" 啟動自動補全  
+filetype plugin indent on   
 
 "括號配對情況  
 set showmatch  

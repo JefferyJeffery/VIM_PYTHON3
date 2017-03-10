@@ -45,8 +45,10 @@
 	    """ YouCompleteMe {{{
 			Plugin 'Valloric/YouCompleteMe'
 			""" settings {{{
-				"默認配置文件路徑"
-				let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
+				" 默認配置文件路徑
+				" 引入，可以补全系统，以及python的第三方包
+				let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+				let g:ycm_key_invoke_completion = ''
 				"打開vim時不再詢問是否加載ycm_extra_conf.py配置"
 				let g:ycm_confirm_extra_conf=0
 				set completeopt=longest,menu
@@ -96,18 +98,7 @@
 
 	"==========================================  
 	" Snippet  
-	"========================================== 
-	    " SnipMate 外掛插件是模仿 TextMate
-	    " 中流行的程式碼片段(snippet)功能。允許你輸入一小段程式碼，
-	    " 然後按下tab，使它自動擴展至完整程式碼或 HTML 。
-	    " SnipMate aims to provide support for textual snippets
-	    " For example, in C, typing for<tab> could be expanded To
-	    "    for (i = 0; i < count; i++) {
-	    "      /* code */
-	    "    }
-		Plugin 'MarcWeber/vim-addon-mw-utils'
-		Plugin 'tomtom/tlib_vim'
-		Plugin 'garbas/vim-snipmate'
+	"==========================================
 
 		" Optional:
 		Plugin 'honza/vim-snippets'
@@ -281,7 +272,7 @@
 		""" Super easy commenting, toggle comments etc {{{
 			Plugin 'scrooloose/nerdcommenter'
 			""" settings {{{
-				map <leader>\ <leader>ci <CR>
+				map <Leader><Leader>\ <leader>ci <CR>
 			""" }}}
 
 			"單行註解：在normal模式下, 連按 '\\' 
@@ -298,9 +289,9 @@
 		        ":b n    跳往第n個buffer
 		        ":bd     關掉目前buffer
 		        ":ls     Show all open buffers and their status
-		    nmap <leader>bn :bn<CR>
-		    nmap <leader>bp  :bp<CR>
-		    nmap <leader>bd  :bd<CR>
+		    nmap <C-n> :bn<CR>
+		    nmap <C-b>  :bp<CR>
+		    nmap <C-d>  :bd<CR>
 		    nmap <leader>bl :ls<CR>
 		    nmap <leader>1 :b 1<CR>
 		    nmap <leader>2 :b 2<CR>
@@ -412,10 +403,10 @@
 
 		""" }}}
 
-		"==========================================  
-		"  語法檢查
-		" http://www.wklken.me/posts/2015/06/07/vim-plugin-syntastic.html
-		"========================================== 
+	"==========================================  
+	"  語法檢查
+	" http://www.wklken.me/posts/2015/06/07/vim-plugin-syntastic.html
+	"========================================== 
 	    " 可以做到即時錯誤檢查
 	    Plugin 'vim-syntastic/syntastic'
 
@@ -476,13 +467,13 @@
 		    Plugin 'Xuyuanp/nerdtree-git-plugin'
 		    """ settings {{{
 		    let g:NERDTreeIndicatorMapCustom = {
-		        \ "Modified"  : "✹",
+		        \ "Modified"  : "~",
 		        \ "Staged"    : "✚",
-		        \ "Untracked" : "✭",
+		        \ "Untracked" : "✹",
 		        \ "Renamed"   : "➜",
 		        \ "Unmerged"  : "═",
 		        \ "Deleted"   : "✖",
-		        \ "Dirty"     : "✗",
+		        \ "Dirty"     : "!",
 		        \ "Clean"     : "✔︎",
 		        \ "Unknown"   : "?"
 		        \ }
@@ -496,33 +487,90 @@
 	    Plugin 'tpope/vim-fugitive'
 
 	"==========================================  
-	"   Status
+	"   Status Line - airline
+	"   狀態列顯示的好幫手
+	"   http://terrychen.logdown.com/posts/2014/10/18/vim-airline-status-bar-helper
 	"==========================================  
+	
+	Plugin 'vim-airline/vim-airline'
+	Plugin 'Lokaltog/powerline-fonts.git'  " 需要 'cd powerline-fonts/'  並執行 './install.sh'
+	" All Powerline fonts installed to /Users/Jeffery/Library/Fonts at 2017/3/10
 
-		""" Status Line {{{
+    """ {{{
+        "http://terrychen.logdown.com/posts/2014/10/18/vim-airline-status-bar-helper
+        " set cmdheight=1 " 設定命令行的行數為 1
+        set laststatus=2 " 顯示狀態欄 (默認值為 1, 無法顯示狀態欄)
+        " set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\  " 設置在狀態行顯示的信息
+        
+        let g:airline#extensions#syntastic#enabled = 1
 
-			" 狀態列顯示的好幫手
-			Plugin 'vim-airline/vim-airline'
-		    """ {{{
-		        "http://terrychen.logdown.com/posts/2014/10/18/vim-airline-status-bar-helper
-		        " set cmdheight=1 " 設定命令行的行數為 1
-		        set laststatus=2 " 顯示狀態欄 (默認值為 1, 無法顯示狀態欄)
-		        "set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\  " 設置在狀態行顯示的信息
-		        let g:airline#extensions#tabline#enabled = 1
-		        let g:airline#extensions#tabline#left_sep = ' '
-		        let g:airline#extensions#tabline#left_alt_sep = '|'
-		        let g:airline_powerline_fonts = 1
-		        let g:airline#extensions#syntastic#enabled = 1
-		    """ }}}
+		" show buffer number
+		let g:airline#extensions#tabline#buffer_nr_show = 1
 
-			" vim-airliUsing a Theme
-		    " Once installed, use :AirlineTheme <theme> to set the theme, e.g. :AirlineTheme simpl
-	        " To set in .vimrc, use let g:airline_theme='<theme>', e.g. let g:airline_theme='simple'ne 
-			Plugin 'vim-airline/vim-airline-themes'
-		    """ {{{
-		        let g:airline_theme='vice'
-		    """ }}}
-		""" }}}
+
+		" enable tabline
+        let g:airline#extensions#tabline#enabled = 1
+
+		" enable powerline-fonts
+		let g:airline_powerline_fonts = 1
+		set guifont=Meslo\ LG\ S\ Regular\ for\ Powerline:h14
+		" vi 另外需要在 item2中設定: Preferences > Profile > Text > Font > Change Font ==> set Meslo\ LG\ S\ Regular\ for\ Powerline:h14
+		"                                                       > Non-Ascii Font > Change Font ==> set Meslo\ LG\ S\ Regular\ for\ Powerline:h14
+
+		" vim-airline
+		if !exists('g:airline_symbols')
+		  let g:airline_symbols = {}
+		endif
+
+		if !exists('g:airline_powerline_fonts')
+			let g:airline#extensions#tabline#left_sep = ' '
+			let g:airline#extensions#tabline#left_alt_sep = '|'
+			let g:airline_left_sep          = '⫸'
+			let g:airline_left_alt_sep      = '»'
+			let g:airline_right_sep         = '⫷'
+			let g:airline_right_alt_sep     = '«'
+			let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
+			let g:airline#extensions#readonly#symbol   = '⊘'
+			let g:airline#extensions#linecolumn#prefix = '¶'
+			let g:airline#extensions#paste#symbol      = 'ρ'
+			let g:airline_symbols.linenr    = '␊'
+			let g:airline_symbols.branch    = '⎇'
+			let g:airline_symbols.paste     = 'ρ'
+			let g:airline_symbols.paste     = 'Þ'
+			let g:airline_symbols.paste     = '∥'
+			let g:airline_symbols.whitespace = 'Ξ'
+		else
+			let g:airline#extensions#tabline#left_sep = ''
+			let g:airline#extensions#tabline#left_alt_sep = ''
+
+			" powerline symbols
+			let g:airline_left_sep = ''
+			let g:airline_left_alt_sep = ''
+			let g:airline_right_sep = ''
+			let g:airline_right_alt_sep = ''
+			let g:airline_symbols.branch = ''
+			let g:airline_symbols.readonly = ''
+			let g:airline_symbols.linenr = ''
+		endif
+
+    """ }}}
+
+    "==============================
+	" vim-airliUsing a Theme
+	"==============================
+
+    " Once installed, use :AirlineTheme <theme> to set the theme, e.g. :AirlineTheme simpl
+    " To set in .vimrc, use let g:airline_theme='<theme>', e.g. let g:airline_theme='simple'ne 
+    " If you want to change the vim-airline theme , you can refrence this website:
+    " 	https://github.com/vim-airline/vim-airline/wiki/Screenshots
+
+	Plugin 'vim-airline/vim-airline-themes'
+    """ {{{
+        let g:airline_theme='vice'
+    """ }}}
+
+
+
 
 	"==========================================  
 	"  Color Scheme
@@ -556,7 +604,6 @@
 	        :qa
 	    endif
 	""" }}}
-
 """ }}}
 
 
@@ -566,15 +613,14 @@
 source ~/.vim/vimrc_settings
 
 "==========================================  
-" Function 
+" Function - YCM
 "========================================== 
-" 按F5運行python"
-map <F5> :Autopep8<CR> :w<CR> :call RunPython()<CR>
-
 " 再VIRTUAL_ENV 中，將 Django lib 路徑加入 sys.path 中，方便 YCM 尋找
 function FindDjangoSettingsInVirtualEnv()
-    if strlen($VIRTUAL_ENV) && has('python3')
+    if strlen($VIRTUAL_ENV) && (has('python3') || has('python'))
+
         let django_check = system("pip freeze | grep -q Django")
+
         if v:shell_error
         	echom v:shell_error
             echom 'django not installed.'
@@ -584,13 +630,25 @@ function FindDjangoSettingsInVirtualEnv()
             let outarray= split(output, '[\/]\+')
             let module  = outarray[-2] . '.' . 'settings'
             let syspath = system("python -c 'import sys; print(sys.path)' | tr '\n' ' ' ")
+
             " let curpath = '/' . join(outarray[:-2], '/')
-            execute 'py3 import sys, os'
-            " execute 'py3 sys.path.append("' . curpath . '")'
-            " execute 'py3 sys.path.append("' . syspath . '")'
-            execute 'py3 sys.path = ' . syspath
-            execute 'py3 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "' . module . '")'
+
+            if has('python3')
+	            execute 'py3 import sys, os'
+	            " execute 'py3 sys.path.append("' . curpath . '")'
+	            " execute 'py3 sys.path.append("' . syspath . '")'
+	            execute 'py3 sys.path = ' . syspath
+	            execute 'py3 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "' . module . '")'
+            elseif has('python')
+	            execute 'py import sys, os'
+	            " execute 'py sys.path.append("' . curpath . '")'
+	            " execute 'py sys.path.append("' . syspath . '")'
+	            execute 'py sys.path = ' . syspath
+	            execute 'py os.environ.setdefault("DJANGO_SETTINGS_MODULE", "' . module . '")'
+            endif
+
         endif
+
     endif
 endfunction
 call FindDjangoSettingsInVirtualEnv()
