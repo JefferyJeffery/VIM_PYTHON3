@@ -96,11 +96,11 @@
 			""" }}}
 		""" }}}
 
-	"==========================================  
-	" Snippet  
-	"==========================================
-
-		" Optional:
+    "==============================
+	" ultisnips
+	"==============================
+		
+		" Snippets are separated from the engine. Add this if you want them:
 		Plugin 'honza/vim-snippets'
 
 	"==========================================  
@@ -190,9 +190,6 @@
 		    Plugin 'jistr/vim-nerdtree-tabs'
 		    """ NERDTree-Tabs {{{
 		        let g:nerdtree_tabs_open_on_console_startup=1       "設置打開vim的時候默認打開目錄樹
-
-		        " 開啟或關閉 NERDTree Tabs，快捷鍵: \t "
-		        "nmap <silent> <leader>t :NERDTreeTabsToggle
 		    """ }}}
 		""" }}}
 
@@ -570,8 +567,6 @@
     """ }}}
 
 
-
-
 	"==========================================  
 	"  Color Scheme
 	"==========================================  
@@ -615,40 +610,32 @@ source ~/.vim/vimrc_settings
 "==========================================  
 " Function - YCM
 "========================================== 
-" 再VIRTUAL_ENV 中，將 Django lib 路徑加入 sys.path 中，方便 YCM 尋找
-function FindDjangoSettingsInVirtualEnv()
+" 再VIRTUAL_ENV 中，將 pip 安裝的 lib 路徑加入 sys.path 中，方便 YCM 尋找
+function FindPythonThirdPartyInVirtualEnv()
     if strlen($VIRTUAL_ENV) && (has('python3') || has('python'))
-
-        let django_check = system("pip freeze | grep -q Django")
-
-        if v:shell_error
-        	echom v:shell_error
-            echom 'django not installed.'
+        let thirdParty_check = system("pip freeze ")
+        if !strlen(thirdParty_check)
+            echom $VIRTUAL_ENV . ' no thirdParty '
         else
-            echom 'django is installed.'
             let output  = system("find $VIRTUAL_ENV -wholename '*/lib/*' -or -wholename '*/install/' -or -name 'settings.py' | tr '\n' ' '")
             let outarray= split(output, '[\/]\+')
             let module  = outarray[-2] . '.' . 'settings'
             let syspath = system("python -c 'import sys; print(sys.path)' | tr '\n' ' ' ")
 
-            " let curpath = '/' . join(outarray[:-2], '/')
-
             if has('python3')
 	            execute 'py3 import sys, os'
-	            " execute 'py3 sys.path.append("' . curpath . '")'
-	            " execute 'py3 sys.path.append("' . syspath . '")'
 	            execute 'py3 sys.path = ' . syspath
 	            execute 'py3 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "' . module . '")'
             elseif has('python')
 	            execute 'py import sys, os'
-	            " execute 'py sys.path.append("' . curpath . '")'
-	            " execute 'py sys.path.append("' . syspath . '")'
 	            execute 'py sys.path = ' . syspath
 	            execute 'py os.environ.setdefault("DJANGO_SETTINGS_MODULE", "' . module . '")'
             endif
+
+            echom 'ThirdParty package is installed.'
 
         endif
 
     endif
 endfunction
-call FindDjangoSettingsInVirtualEnv()
+call FindPythonThirdPartyInVirtualEnv()
