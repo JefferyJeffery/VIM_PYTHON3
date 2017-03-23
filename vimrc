@@ -278,6 +278,16 @@
 
 		""" }}}
 
+		""" Vim PlantUML
+			Plugin 'aklt/plantuml-syntax'
+
+			" I have already set alies of plantuml in ~/.bashrc
+			" alies plantuml='java -jar $HOME/.local/lib/java/plantuml.jar -tsvg'
+			" let g:plantuml_executable_script='~/.vim/shell/plantuml.sh'
+
+			" Usage
+			" open *.pu, *.uml or *.plantuml files or if the first line of a file contains @startuml , and command ':make'
+
 		""" buffer {{{
 		    "http://www.study-area.org/tips/vim/Vim-6.html
 		    "http://bearsu.logdown.com/posts/305966-vim-buffer-window
@@ -347,9 +357,26 @@
 		      "0 or '' (empty string) - disable this feature.
 		    """ }}}
 
-		    "多文件下关键字搜索  (簡易版的 vimgrep)
+		    "多文件下关键字搜索  (簡易版的 vimgrep)  [ http://vim.wikia.com/wiki/Find_in_files_within_Vim ]
 		    " :vim[grep][!] /{pattern}/[g][j] {file} ...
-		    " :vimgrep /hello/j **
+		    " :lvim[grep][!] /{pattern}/[g][j] {file} ...
+
+		    " The 'pattern' : regular expressions
+		    " The 'g' option specifies that all matches for a search will be returned instead of just one per line, 
+		    " The 'j' option specifies that Vim will not jump to the first match automatically.
+
+			" 'vim'/'grep'/'vimgrep' fill the "quickfix list", which can be opened with :cw or :copen, and is a list shared between ALL windows.
+		    " 'lvim'/'lgrep'/'lvimgrep' fill the "location list," which is local to the current window, and can be opened with :lw or :lopen
+
+		    " For example, to search for the words "house" or "home" in all .txt files in the current directory, use:
+			" :lvim /\<\(house\|home\)\>/gj *.txt
+			" :lw
+
+			" Recursive search
+			" You can use ** in the file pattern to search recursively. 
+			" For example, to search for all lines containing "dostuff()" in all .c files in the parent directory and all its subdirectories, use:
+			" :vimgrep /dostuff()/j ../**/*.c
+
 		    "<leader>預設值是對應到"\"
 		    "<leader>vv - Grep for the word under the cursor | grep 游標位置
 		    "<Leader>vV - Grep for the word under the cursor, match whole word, like  |star|
