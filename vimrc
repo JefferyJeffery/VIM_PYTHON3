@@ -41,67 +41,149 @@
 	"==========================================  
 	" Auto Complete
 	"========================================== 
+    """ YouCompleteMe {{{
+        Plugin 'Valloric/YouCompleteMe'
+        """ settings {{{
+            " 默認配置文件路徑
+            " 引入，可以补全系统，以及python的第三方包
+            let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+            let g:ycm_key_invoke_completion = ''
+            "打開vim時不再詢問是否加載ycm_extra_conf.py配置"
+            let g:ycm_confirm_extra_conf=0
+            set completeopt=longest,menu
+            "python解釋器路徑"
+            let g:ycm_path_to_python_interpreter='/usr/local/bin/python3.6'
+            "是否開啟語義補全"
+            let g:ycm_seed_identifiers_with_syntax=1
+            "是否在註釋中也開啟補全"
+            let g:ycm_complete_in_comments=1
+            let g:ycm_collect_identifiers_from_comments_and_strings = 0
+            "開始補全的字符數"
+            let g:ycm_min_num_of_chars_for_completion=1
+            "補全後自動關機預覽窗口"
+            let g:ycm_autoclose_preview_window_after_completion=1
+            " 禁止緩存匹配項,每次都重新生成匹配項"
+            let g:ycm_cache_omnifunc=0
+            "字符串中也開啟補全"
+            let g:ycm_complete_in_strings = 1
+            let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
+            let g:ycm_use_ultisnips_completer = 1 " Default 1, just ensure
 
-	    """ YouCompleteMe {{{
-			Plugin 'Valloric/YouCompleteMe'
-			""" settings {{{
-				" 默認配置文件路徑
-				" 引入，可以补全系统，以及python的第三方包
-				let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-				let g:ycm_key_invoke_completion = ''
-				"打開vim時不再詢問是否加載ycm_extra_conf.py配置"
-				let g:ycm_confirm_extra_conf=0
-				set completeopt=longest,menu
-				"python解釋器路徑"
-				let g:ycm_path_to_python_interpreter='/usr/local/bin/python3.6'
-				"是否開啟語義補全"
-				let g:ycm_seed_identifiers_with_syntax=1
-				"是否在註釋中也開啟補全"
-				let g:ycm_complete_in_comments=1
-				let g:ycm_collect_identifiers_from_comments_and_strings = 0
-				"開始補全的字符數"
-				let g:ycm_min_num_of_chars_for_completion=1
-				"補全後自動關機預覽窗口"
-				let g:ycm_autoclose_preview_window_after_completion=1
-				" 禁止緩存匹配項,每次都重新生成匹配項"
-				let g:ycm_cache_omnifunc=0
-				"字符串中也開啟補全"
-				let g:ycm_complete_in_strings = 1
-	            let g:ycm_collect_identifiers_from_tags_files = 1 " Let YCM read tags from Ctags file
-	            let g:ycm_use_ultisnips_completer = 1 " Default 1, just ensure
+            "離開插入模式後自動關閉預覽窗口"
+            autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+            "回車即選中當前項"
+            inoremap <expr> <CR>       pumvisible() ? '<C-y>' : '<CR>'     
+            "上下左右鍵行為"
+            inoremap <expr> <Down>     pumvisible() ? '\<C-n>' : '\<Down>'
+            inoremap <expr> <Up>       pumvisible() ? '\<C-p>' : '\<Up>'
+            inoremap <expr> <PageDown> pumvisible() ? '\<PageDown>\<C-p>\<C-n>' : '\<PageDown>'
+            inoremap <expr> <PageUp>   pumvisible() ? '\<PageUp>\<C-p>\<C-n>' : '\<PageUp>'
 
-				"離開插入模式後自動關閉預覽窗口"
-				autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-				"回車即選中當前項"
-				inoremap <expr> <CR>       pumvisible() ? '<C-y>' : '<CR>'     
-				"上下左右鍵行為"
-				inoremap <expr> <Down>     pumvisible() ? '\<C-n>' : '\<Down>'
-				inoremap <expr> <Up>       pumvisible() ? '\<C-p>' : '\<Up>'
-				inoremap <expr> <PageDown> pumvisible() ? '\<PageDown>\<C-p>\<C-n>' : '\<PageDown>'
-				inoremap <expr> <PageUp>   pumvisible() ? '\<PageUp>\<C-p>\<C-n>' : '\<PageUp>'
+            "跳轉到聲明
+            nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
 
-				"跳轉到聲明
-				nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
+            "跳轉到定義
+            nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
 
-				"跳轉到定義
-				nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
+            "跳轉到定義&聲明
+            nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-				"跳轉到定義&聲明
-				nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
+            "YCM還支持語義診斷 , 不合法的語句，在行首會顯示錯誤
+            " let g:ycm_error_symbol = '❌'
+            " let g:ycm_warning_symbol = '😱'
 
-				"YCM還支持語義診斷 , 不合法的語句，在行首會顯示錯誤
-				" let g:ycm_error_symbol = '❌'
-				" let g:ycm_warning_symbol = '😱'
-
-			""" }}}
-		""" }}}
+        """ }}}
+    """ }}}
 
     "==============================
 	" ultisnips
 	"==============================
-		
-		" Snippets are separated from the engine. Add this if you want them:
-		Plugin 'honza/vim-snippets'
+    Plugin 'SirVer/ultisnips'
+    " Snippets are separated from the engine. Add this if you want them:
+    Plugin 'honza/vim-snippets'
+
+    "--> UltiSnips模板生成
+	"￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣
+
+	let g:UltiSnipsExpandTrigger       = "<tab>"
+	let g:UltiSnipsJumpForwardTrigger  = "<tab>"
+	let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+	let g:UltiSnipsSnippetsDir = '~/.vim/UltiSnips'
+    let g:UltiSnipsSnippetDirectories = ['UltiSnips']
+
+    let g:UltiSnipsUsePythonVersion = 3
+
+	function! g:UltiSnips_Complete()
+	    call UltiSnips#ExpandSnippet()
+	    if g:ulti_expand_res == 0
+	        if pumvisible()
+	            return "\<C-n>"
+	        else
+	            call UltiSnips#JumpForwards()
+	            if g:ulti_jump_forwards_res == 0
+	               return "\<TAB>"
+	            endif
+	        endif
+	    endif
+	    return ""
+	endfunction
+	autocmd BufNewFile,BufRead *.snippets setf snippets
+	" 自动调用 UltiSnipsAddFileTypes filetype
+	" autocmd FileType * call UltiSnips#FileTypeChanged()
+	autocmd InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<CR>"
+	augroup Filetype_Specific
+	    autocmd FileType javascript nnoremap <buffer> <leader>j :call JsBeautify()<CR>
+	    autocmd FileType html nnoremap <buffer> <leader>j :call HtmlBeautify()<CR>
+	    autocmd FileType css nnoremap <buffer> <leader>j :call CSSBeautify()<CR>
+	    autocmd FileType json nnoremap <buffer> <leader>j :call JsonBeautify()<CR>
+	    autocmd FileType javascript vnoremap <buffer>  <leader>j :call RangeJsBeautify()<cr>
+	    autocmd FileType html vnoremap <buffer> <leader>j :call RangeHtmlBeautify()<cr>
+	    autocmd FileType css vnoremap <buffer> <leader>j :call RangeCSSBeautify()<cr>
+	    autocmd FileType json vnoremap <buffer> <leader>j :call RangeCSSBeautify()<cr>
+	augroup END
+
+	"==========================================  
+	" JavaScript  
+	"==========================================  
+    " This is a Vim plugin that provides Tern-based JavaScript editing
+    " support.
+    Plugin 'ternjs/tern_for_vim'
+    "## Installation
+    "#### Manual
+    "If you use [Pathogen][path] or something similar, you can clone this
+    "repository to your `~/.vim/bundle` (or equivalent) directory. Make
+    "sure you have [node.js][node] and [npm][npm] installed (Tern is a
+    "JavaScript program), and install the tern server by running `npm
+    "install` in the `bundle/tern_for_vim` directory.
+
+    """ tern {{{
+        "http://efe.baidu.com/blog/vim-javascript-completion/
+        "http://yogeshpowar.blogspot.tw/2016/02/vim-javascript-and-tern.html
+        "http://usevim.com/2013/05/24/tern/
+        set omnifunc=syntaxcomplete#Complete
+        let g:tern_map_keys=1
+        " 鼠标停留在方法内时显示参数提示
+        let g:tern_show_argument_hints = 'on_hold'
+        " 补全时显示函数类型定义
+        let g:tern_show_signature_in_pum = 1
+         "跳转到浏览器
+        "nnoremap <leader>tb :TernDocBrowse<cr>
+        " 显示变量定义
+        "nnoremap <leader>tt :TernType<cr>
+        " 跳转到定义处
+        "nnoremap <leader>tf :TernDef<cr>
+        " 显示文档
+        "nnoremap <leader>td :TernDoc<cr>
+        "Look up definition in new split
+        "nnoremap <leader>tsd :TernDefSplit<cr>
+        " 预览窗口显示定义处代码
+        "nnoremap <leader>tp :TernDefPreview<cr>
+        " 变量重命名
+        "nnoremap <leader>tr :TernRename<cr>
+        " location 列表显示全部引用行
+        "nnoremap <leader>ts :TernRefs<cr>
+    """ }}}
+
 
 	"==========================================  
 	" Nerdtree  
@@ -634,35 +716,3 @@
 "========================================== 
 source ~/.vim/vimrc_settings
 
-"==========================================  
-" Function - YCM
-"========================================== 
-" 再VIRTUAL_ENV 中，將 pip 安裝的 lib 路徑加入 sys.path 中，方便 YCM 尋找
-function FindPythonThirdPartyInVirtualEnv()
-    if strlen($VIRTUAL_ENV) && (has('python3') || has('python'))
-        let thirdParty_check = system("pip freeze ")
-        if !strlen(thirdParty_check)
-            echom $VIRTUAL_ENV . ' no thirdParty '
-        else
-            let output  = system("find $VIRTUAL_ENV -wholename '*/lib/*' -or -wholename '*/install/' -or -name 'settings.py' | tr '\n' ' '")
-            let outarray= split(output, '[\/]\+')
-            let module  = outarray[-2] . '.' . 'settings'
-            let syspath = system("python -c 'import sys; print(sys.path)' | tr '\n' ' ' ")
-
-            if has('python3')
-	            execute 'py3 import sys, os'
-	            execute 'py3 sys.path = ' . syspath
-	            execute 'py3 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "' . module . '")'
-            elseif has('python')
-	            execute 'py import sys, os'
-	            execute 'py sys.path = ' . syspath
-	            execute 'py os.environ.setdefault("DJANGO_SETTINGS_MODULE", "' . module . '")'
-            endif
-
-            echom 'ThirdParty package is installed.'
-
-        endif
-
-    endif
-endfunction
-call FindPythonThirdPartyInVirtualEnv()

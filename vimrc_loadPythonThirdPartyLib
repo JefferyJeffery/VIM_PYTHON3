@@ -1,0 +1,32 @@
+"==========================================  
+" Function - YCM
+"========================================== 
+" 再VIRTUAL_ENV 中，將 pip 安裝的 lib 路徑加入 sys.path 中，方便 YCM 尋找
+function FindPythonThirdPartyInVirtualEnv()
+    if strlen($VIRTUAL_ENV) && (has('python3') || has('python'))
+        let thirdParty_check = system("pip freeze ")
+        if !strlen(thirdParty_check)
+            echom $VIRTUAL_ENV . ' no thirdParty '
+        else
+            let output  = system("find $VIRTUAL_ENV -wholename '*/lib/*' -or -wholename '*/install/' -or -name 'settings.py' | tr '\n' ' '")
+            let outarray= split(output, '[\/]\+')
+            let module  = outarray[-2] . '.' . 'settings'
+            let syspath = system("python -c 'import sys; print(sys.path)' | tr '\n' ' ' ")
+
+            if has('python3')
+	            execute 'py3 import sys, os'
+	            execute 'py3 sys.path = ' . syspath
+	            execute 'py3 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "' . module . '")'
+            elseif has('python')
+	            execute 'py import sys, os'
+	            execute 'py sys.path = ' . syspath
+	            execute 'py os.environ.setdefault("DJANGO_SETTINGS_MODULE", "' . module . '")'
+            endif
+
+            echom 'ThirdParty package is installed.'
+
+        endif
+
+    endif
+endfunction
+call FindPythonThirdPartyInVirtualEnv()

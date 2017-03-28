@@ -28,8 +28,11 @@ set noswapfile
 set clipboard=unnamed
 
 "貼時保持格式  
-set paste  
-"- 則點擊光標不會換,用於複製 
+" When the 'paste' option is switched on (also when it was already on):
+"                - mapping in Insert mode and Command-line mode is disabled
+" 會造成 ultisnips 失效
+" set paste  
+
 
 "==========================================  
 " mouse  
@@ -43,10 +46,10 @@ set selectmode=mouse,key
 " Indent multiple lines with tab
 "========================================== 
 " In Normal mode , Indent multiple lines with tab
-nmap <tab> V>
-nmap <s-tab> V<
-vmap <tab> >gv
-vmap <s-tab> <gv
+"nmap <tab> V>
+"nmap <s-tab> V<
+"vmap <tab> >gv
+"vmap <s-tab> <gv
 
 "==========================================  
 " No annoying sound on errors    
