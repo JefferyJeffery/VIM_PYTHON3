@@ -184,7 +184,19 @@
         "nnoremap <leader>ts :TernRefs<cr>
     """ }}}
 
+	"==========================================  
+	"  Syntax Highlight for js lib
+	"==========================================  
+    Plugin 'othree/javascript-libraries-syntax.vim'
+    "let g:used_javascript_libs = 'underscore,backbone,jquery,vue,react'
 
+
+	"==========================================  
+    "Vim syntax highlighting for pug , html
+	"==========================================  
+    Plugin 'digitaltoad/vim-pug'
+    Plugin 'tpope/vim-haml'
+    
 	"==========================================  
 	" Nerdtree  
 	"==========================================  
@@ -379,7 +391,7 @@
 		        ":bd     關掉目前buffer
 		        ":ls     Show all open buffers and their status
 		    nmap <C-n> :bn<CR>
-		    nmap <C-b>  :bp<CR>
+			"nmap <c-b>  :bp<CR>
 		    nmap <C-d>  :bd<CR>
 		    nmap <leader>bl :ls<CR>
 		    nmap <leader>1 :b 1<CR>
@@ -510,6 +522,47 @@
 		""" }}}
 
 	"==========================================  
+	"  Vdebug is a new, fast, powerful debugger client for Vim. 
+    "  It's multi-language, and has been tested with 
+    "  PHP, Python, Ruby, Perl, Tcl and NodeJS. 
+    "  It interfaces with any debugger that faithfully uses the
+    "  DBGP protocol, such as Xdebug for PHP.
+    "  
+    "   https://github.com/joonty/vdebug
+	"========================================== 
+        "Plugin 'joonty/vdebug'
+
+        "Quick guide
+
+        "Set up any DBGP protocol debugger, e.g. Xdebug. (See :help VdebugSetUp). Start Vdebug with <F5>, which will make it wait for an incoming connection. Run the script you want to debug, with the debugging engine enabled. A new tab will open with the debugging interface.
+
+        "Once in debugging mode, the following default mappings are available:
+
+        "<F5>: start/run (to next breakpoint/end of script)
+        "<F2>: step over
+        "<F3>: step into
+        "<F4>: step out
+        "<F6>: stop debugging (kills script)
+        "<F7>: detach script from debugger
+        "<F9>: run to cursor
+        "<F10>: toggle line breakpoint
+        "<F11>: show context variables (e.g. after "eval")
+        "<F12>: evaluate variable under cursor
+        ":Breakpoint <type> <args>: set a breakpoint of any type (see :help VdebugBreakpoints)
+        ":VdebugEval <code>: evaluate some code and display the result
+        "<Leader>e: evaluate the expression under visual highlight and display the result
+        "To stop debugging, press <F6>. Press it again to close the debugger interface.
+
+        "If you can't get a connection, then chances are you need to spend a bit of time setting up your environment. Type :help Vdebug for more information.
+        "
+        "
+        "Debugging
+
+        "If you have a problem, and would like to see what's going on under the hood or raise an issue, it's best to create a log file. You can do this by setting these options before you start debugging:
+
+        ":VdebugOpt debug_file ~/vdebug.log
+        ":VdebugOpt debug_file_level 2
+	"==========================================  
 	"  語法檢查
 	" http://www.wklken.me/posts/2015/06/07/vim-plugin-syntastic.html
 	"========================================== 
@@ -591,7 +644,22 @@
 
 	    " Git wrapper inside Vim
 	    Plugin 'tpope/vim-fugitive'
+        """ setting
+        " Signify ------------------------------
 
+        " this first setting decides in which order try to guess your current vcs
+        " UPDATE it to reflect your preferences, it will speed up opening files
+        let g:signify_vcs_list = [ 'git', 'hg' ]
+        " mappings to jump to changed blocks
+        nmap sn (signify-next-hunk)
+        nmap sp (signify-prev-hunk)
+        " nicer colors
+        highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
+        highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
+        highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
+        highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
+        highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
+        highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
 	"==========================================  
 	"   Status Line - airline
 	"   狀態列顯示的好幫手
@@ -716,3 +784,28 @@
 "========================================== 
 source ~/.vim/vimrc_settings
 
+
+"==========================================  
+"Vim syntax highlighting for Vue components.
+"==========================================  
+autocmd BufNewFile,BufEnter *.vue setfiletype vue
+autocmd FileType vue setlocal autoindent expandtab shiftwidth=2 softtabstop=2 commentstring=//\ %s comments=:// iskeyword+=-
+\ | syntax keyword htmlArg contained v-text v-html v-if v-show v-else v-for v-on v-bind v-model v-pre v-cloak v-once
+\ | syntax keyword htmlArg contained key ref slot
+\ | syntax keyword htmlTagName contained component transition transition-group keep-alive slot
+\ | syntax include @PUG syntax/pug.vim | unlet b:current_syntax
+\ | syntax include @JS syntax/javascript.vim | unlet b:current_syntax
+\ | syntax include @SASS syntax/sass.vim | unlet b:current_syntax
+\ | syntax region vueTemplate matchgroup=vueTag start=/^<template.*>$/ end='</template>' contains=@PUG keepend
+\ | syntax region vueScript matchgroup=vueTag start=/^<script.*>$/ end='</script>' contains=@JS keepend
+\ | syntax region vueStyle matchgroup=vueTag start=/^<style.*>$/ end='</style>' contains=@SASS keepend
+\ | syntax sync fromstart
+highlight vueTag ctermfg=Blue
+
+"==========================================  
+" Auto-Reload Your Vimrc
+"========================================== 
+augroup reload_vimrc " {
+    autocmd!
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END " }

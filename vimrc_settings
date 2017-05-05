@@ -46,10 +46,11 @@ set selectmode=mouse,key
 " Indent multiple lines with tab
 "========================================== 
 " In Normal mode , Indent multiple lines with tab
-"nmap <tab> V>
-"nmap <s-tab> V<
-"vmap <tab> >gv
-"vmap <s-tab> <gv
+" 全選用 V 後 按  > 
+nmap <tab> V>
+nmap <s-tab> V<
+"vmap <M-]> >gv
+"vmap <M-[> <gv
 
 "==========================================  
 " No annoying sound on errors    
